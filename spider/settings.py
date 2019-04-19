@@ -14,7 +14,7 @@ BOT_NAME = 'spider'
 SPIDER_MODULES = ['spider.spiders']
 NEWSPIDER_MODULE = 'spider.spiders'
 
-SPLASH_URL = 'http://localhost:8050'
+SPLASH_URL = 'http://hyuun.cn:5023'
 DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
 SPIDER_MIDDLEWARES = {
     'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,

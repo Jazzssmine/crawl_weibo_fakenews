@@ -48,7 +48,6 @@ class XuanchuanbuSpider(scrapy.Spider):
         self.toutiao_user_spider()
         self.zhihu_user_spider()
         for each in self.monitor_user_list:
-            print(each[1])
             if each[1] == 4:
                 r = SplashRequest('https://www.toutiao.com/c/user/' + each[0] + '/',
                                   self.toutiao_parse, endpoint='render.html',

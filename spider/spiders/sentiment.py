@@ -13,7 +13,8 @@ import numpy as np
 
 class Sentiment:
     def __init__(self):
-        self.db = pymysql.connect("localhost", "root", "tjunsbank", "xuanchuanbu")
+        self.db = pymysql.connect("hyuun.cn", "xuanchuanbu", "xuanchuanbu", "xuanchuanbu",
+                                  3308, charset='utf-8')
         self.cursor = self.db.cursor()
 
     def insert_into_user(self, monitor_user_list):
@@ -64,7 +65,7 @@ class Sentiment:
                 temp = [row[0], row[6]]
                 aid_text = copy.copy(temp)
                 self.aid_text_list.append(aid_text)
-                self.urls.append(row[6])
+                self.urls.append(row[6].encode("utf-8"))
                 # str_date = re.search("[0-9]+.*[0-9]$", row[4]).group()
                 # row[4] = datetime.strptime(str_date, "%Y-%m-%d %H:%M")  # 转换日期格式
                 list1 = copy.copy(row)
@@ -91,12 +92,12 @@ class Sentiment:
                 self.aid_text_list_process.append(self.aid_text_list[i])
             except:
                 print("数据格式出错,这条数据内容为：")
-                print(text)
                 self.pp.append(0)
                 # print(result)
             else:
                 # 如果解析错误则填写上空值,使得程序不会出错而停止运行
                 if "error_code" in result.keys():
+                    print(result)
                     pp_sentences = []
                     np_sentences = []
                     sentences_list = re.split("。", text)  # 减小句子长度，防止解析错误
