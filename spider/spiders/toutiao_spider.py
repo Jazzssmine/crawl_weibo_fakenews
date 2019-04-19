@@ -22,18 +22,18 @@ class XuanchuanbuSpider(scrapy.Spider):
     article_list = []
     monitor_user_list = []
 
-    user_list = ['天津大学',
-                 '南开大学',
-                 '北京大学',
-                 '清华大学',
-                 '上海交通大学',
-                 '浙江大学',
-                 '电子科技大学',
-                 '吉林大学',
-                 '大连理工大学',
-                 '重庆大学']
+    # user_list = ['天津大学',
+    #              '南开大学',
+    #              '北京大学',
+    #              '清华大学',
+    #              '上海交通大学',
+    #              '浙江大学',
+    #              '电子科技大学',
+    #              '吉林大学',
+    #              '大连理工大学',
+    #              '重庆大学']
 
-    # user_list = ['清华大学']
+    user_list = ['清华大学']
 
     def start_requests(self):
         self.monitor_user_list = []
