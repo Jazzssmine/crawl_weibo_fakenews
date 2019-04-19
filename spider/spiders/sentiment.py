@@ -91,7 +91,7 @@ class Sentiment:
                 self.aid_text_list_process.append(self.aid_text_list[i])
             except:
                 print("数据格式出错,这条数据内容为：")
-                print(result)
+                print(text)
                 self.pp.append(0)
                 # print(result)
             else:
