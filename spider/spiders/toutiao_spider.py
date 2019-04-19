@@ -110,7 +110,7 @@ class XuanchuanbuSpider(scrapy.Spider):
         for each in self.user_list:
             soup = BeautifulSoup(
                 requests.get('https://www.zhihu.com/search?type=people&q=' + each,
-                             headers=self.headers).text,
+                             headers=self.headers, allow_redirects=True).text,
                 'lxml')
             a = soup.find_all('a', class_='UserLink-link')[0]
             href = 'https:' + a['href']
