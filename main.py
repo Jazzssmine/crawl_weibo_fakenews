@@ -8,7 +8,8 @@ import multiprocessing
 
 
 def job():
-    cmdline.execute("scrapy crawl toutiao --nolog".split())
+    # cmdline.execute("scrapy crawl toutiao --nolog".split())
+    cmdline.execute("scrapy crawl toutiao".split())
 
 
 sched = BlockingScheduler()
