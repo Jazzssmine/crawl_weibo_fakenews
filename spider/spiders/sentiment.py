@@ -12,10 +12,9 @@ import numpy as np
 
 
 class Sentiment:
-    def __init__(self, article_list):
+    def __init__(self):
         self.db = pymysql.connect("localhost", "root", "tjunsbank", "xuanchuanbu")
         self.cursor = self.db.cursor()
-        self.article_list = article_list
 
     def insert_into_user(self, monitor_user_list):
         sql = "REPLACE INTO monitor_user(`uid`, `mid`, `name`, `gender`, `type`, " \
@@ -55,11 +54,12 @@ class Sentiment:
     # 读取文件，生成三个列表，urls代表生成的全文列表，用作情感分析
     # total_data代表转换格式后的数据（日期，relate_tju）
     # aid_text_list代表文章id和文本的列表，为生成关键字的数据列表
-    def output(self):
+    def output(self, article_list):
+        self.article_list = article_list
         self.urls = []
         self.total_data = []
         self.aid_text_list = []
-        for row in self.article_list:
+        for row in article_list:
             if len(row) == 9:  # 判断每条数据是否由8个字段组成
                 temp = [row[0], row[6]]
                 aid_text = copy.copy(temp)
@@ -132,7 +132,7 @@ class Sentiment:
                         self.pp.append(1)
                     else:
                         self.pp.append(-1)
-                # time.sleep(0.2)
+                        # time.sleep(0.2)
 
     def re_combine_data(self):
         for i in range(0, len(self.pp)):
@@ -140,14 +140,15 @@ class Sentiment:
             j = self.pp[i]
             self.article_list[i].append(j)  # 向数据列表中插入极性分析的结果
 
-    def analyze_article(self):
-        self.output()
+    def analyze_article(self, article_list):
+        self.output(article_list)
         self.sentimentClassify()
         self.re_combine_data()
         self.extract_keyword()
         self.insert_into_articles()
         self.insert_into_article_keywords()
 
-if __name__=='__main__':
-    sentiment=Sentiment([])
+
+if __name__ == '__main__':
+    sentiment = Sentiment()
     sentiment.extract_keyword()
