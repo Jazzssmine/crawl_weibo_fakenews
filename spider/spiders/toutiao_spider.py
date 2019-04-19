@@ -46,7 +46,7 @@ class XuanchuanbuSpider(scrapy.Spider):
         #     yield r
 
         self.toutiao_user_spider()
-        self.zhihu_user_spider()
+        # self.zhihu_user_spider()
         for each in self.monitor_user_list:
             if each[1] == 4:
                 r = SplashRequest('https://www.toutiao.com/c/user/' + each[0] + '/',
