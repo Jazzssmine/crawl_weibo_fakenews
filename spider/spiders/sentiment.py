@@ -13,7 +13,7 @@ import numpy as np
 
 class Sentiment:
     def __init__(self):
-        self.db = pymysql.connect("60.205.217.1", "xuanchuanbu", "xuanchuanbu", "xuanchuanbu",
+        self.db = pymysql.connect("localhost", "xuanchuanbu", "xuanchuanbu", "xuanchuanbu",
                                   3308, charset='utf-8')
         self.cursor = self.db.cursor()
 
