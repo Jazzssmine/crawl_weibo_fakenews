@@ -1,20 +1,18 @@
 # coding=utf-8
 import copy
+import re
 
 import jieba
 import jieba.analyse
-import pymysql
-import re
-
-import time
-from aip import AipNlp
 import numpy as np
+import pymysql
+from aip import AipNlp
 
 
 class Sentiment:
     def __init__(self):
         self.db = pymysql.connect("localhost", "xuanchuanbu", "xuanchuanbu", "xuanchuanbu",
-                                  3308, charset='utf-8')
+                                  3308)
         self.cursor = self.db.cursor()
 
     def insert_into_user(self, monitor_user_list):

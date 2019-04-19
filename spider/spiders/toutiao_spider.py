@@ -17,7 +17,7 @@ class XuanchuanbuSpider(scrapy.Spider):
                       'like Gecko) Chrome/73.0.3683.103 Safari/537.36'
     }
     splash_args = {
-        'wait': 1
+        'wait': 3
     }
     article_list = []
     monitor_user_list = []
