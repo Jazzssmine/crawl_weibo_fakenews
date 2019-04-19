@@ -90,11 +90,11 @@ class XuanchuanbuSpider(scrapy.Spider):
         uid = response.meta['uid']
         mid = 1
         name = response.xpath('//h1[@class="username"]/text()').extract_first()
-        gender = '未知'
+        gender = u'未知'
         if len(response.xpath('//i[@class="W_icon icon_pf_female"]')) > 0:
-            gender = "女"
+            gender = u"女"
         elif len(response.xpath('//i[@class="W_icon icon_pf_male"]')) > 0:
-            gender = '男'
+            gender = u'男'
         type = response.xpath('//li[@class="item S_line2 clearfix"]')[0].xpath(
             './/span[@class="item_text W_fl"]/text()').extract_first()
         introduction = response.xpath('//li[@class="item S_line2 clearfix"]')[1].xpath(
@@ -127,11 +127,11 @@ class XuanchuanbuSpider(scrapy.Spider):
             else:
                 v_info = ''
             if data['gender'] == 1:
-                gender = '男'
+                gender = u'男'
             elif data['gender'] == 0:
-                gender = '女'
+                gender = u'女'
             else:
-                gender = '未知'
+                gender = u'未知'
             introduction = data['description']
             fan_num = data['followerCount']
             follow_num = data['followingCount']
@@ -163,7 +163,7 @@ class XuanchuanbuSpider(scrapy.Spider):
                 title = every['question']['title']
                 url = every['url'].replace('answers', 'answer')
                 full_text = BeautifulSoup(every['content'], 'lxml').text
-                relate_tju = 1 if '天津大学' in full_text else 0
+                relate_tju = 1 if u'天津大学' in full_text else 0
                 line = [aid, uid, mid, title, rdate, '', full_text, url, relate_tju]
                 print(line)
                 self.article_list.append(line)
@@ -190,11 +190,11 @@ class XuanchuanbuSpider(scrapy.Spider):
                 v_info = ''
             img_url = data['avatar_url']
             if data['gender'] == 0:
-                gender = '女'
+                gender = u'女'
             elif data['gender'] == 1:
-                gender = '男'
+                gender = u'男'
             else:
-                gender = '未知'
+                gender = u'未知'
             text = requests.get(source_url, headers=self.headers).text
             follow_num = re.findall("guanzhu:'(.*?)'", text)[0]
             line = [uid, mid, name, gender, '', follow_num, fan_num, 0, '', '', introduction,
@@ -225,7 +225,7 @@ class XuanchuanbuSpider(scrapy.Spider):
         line = response.meta['line']
         full_text = response.xpath('.//div[@class="article-content"]//text()').extract()
         full_text = ''.join(full_text)
-        relate_tju = 1 if '天津大学' in full_text else 0
+        relate_tju = 1 if u'天津大学' in full_text else 0
         line.insert(6, full_text)
         line.append(relate_tju)
         print(line)
