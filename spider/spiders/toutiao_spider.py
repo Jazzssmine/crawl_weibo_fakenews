@@ -38,9 +38,15 @@ class XuanchuanbuSpider(scrapy.Spider):
     def start_requests(self):
         self.monitor_user_list = []
         self.article_list = []
+        # self.weibo_user_spider()
+        # for each in self.user_list:
+        #     url = 'https://s.weibo.com/user?q=%s&Refer' \
+        #           '=weibo_user' % each
+        #     r = scrapy.Request(url, callback=self.weibo_user_search, headers=self.headers)
+        #     yield r
+
         self.toutiao_user_spider()
         self.zhihu_user_spider()
-        Sentiment().insert_into_user(self.monitor_user_list)
         for each in self.monitor_user_list:
             if each[1] == 4:
                 r = SplashRequest('https://www.toutiao.com/c/user/' + each[0] + '/',
@@ -48,20 +54,57 @@ class XuanchuanbuSpider(scrapy.Spider):
                                   args=self.splash_args, headers=self.headers)
                 r.meta['uid'] = each[0]
             elif each[1] == 3:
-                r = scrapy.Request(url='https://www.zhihu.com/api/v4/members/' + each[0] + \
-                                       '/answers?include=data%5B*%5D.is_normal%2Cadmin_closed_comment' \
-                                       '%2Creward_info%2Cis_collapsed%2Cannotation_action%2Cannotation_detail' \
-                                       '%2Ccollapse_reason%2Ccollapsed_by%2Csuggest_edit%2Ccomment_count' \
-                                       '%2Ccan_comment%2Ccontent%2Cvoteup_count%2Creshipment_settings' \
-                                       '%2Ccomment_permission%2Cmark_infos%2Ccreated_time%2Cupdated_time' \
-                                       '%2Creview_info%2Cquestion%2Cexcerpt%2Cis_labeled%2Clabel_info' \
-                                       '%2Crelationship.is_authorized%2Cvoting%2Cis_author%2Cis_thanked' \
-                                       '%2Cis_nothelp%2Cis_recognized%3Bdata%5B*%5D.author.badge'
-                                       '%5B%3F(' \
-                                       'type%3Dbest_answerer)%5D.topics&offset=0&limit=20&sort_by=created',
-                                   callback=self.zhihu_article_spider, headers=self.headers)
+                r = scrapy.Request(url='https://www.zhihu.com/api/v4/members/' + each[
+                    0] + '/answers?include=data%5B*%5D.is_normal%2Cadmin_closed_comment'
+                         '%2Creward_info%2Cis_collapsed%2Cannotation_action'
+                         '%2Cannotation_detail%2Ccollapse_reason%2Ccollapsed_by'
+                         '%2Csuggest_edit%2Ccomment_count%2Ccan_comment%2Ccontent'
+                         '%2Cvoteup_count%2Creshipment_settings%2Ccomment_permission'
+                         '%2Cmark_infos%2Ccreated_time%2Cupdated_time%2Creview_info'
+                         '%2Cquestion%2Cexcerpt%2Cis_labeled%2Clabel_info%2Crelationship'
+                         '.is_authorized%2Cvoting%2Cis_author%2Cis_thanked%2Cis_nothelp'
+                         '%2Cis_recognized%3Bdata%5B*%5D.author.badge%5B%3F('
+                         'type%3Dbest_answerer)%5D.topics&offset=0&limit=20&sort_by=created',
+                                   callback=self.zhihu_article_spider,
+                                   headers=self.headers)
                 r.meta['uid'] = each[0]
+                yield r
+
+    def weibo_user_spider(self):
+        for each in self.user_list:
+            url = 'https://s.weibo.com/user?q=%s&Refer' \
+                  '=weibo_user' % each
+            r = scrapy.Request(url, callback=self.weibo_user_search, headers=self.headers)
             yield r
+
+    def weibo_user_search(self, response):
+        div = response.xpath('//div[@class="avator"]')
+        href = div.xpath(".//a/@href").extract_first()
+        uid = href[href.find('/', 3) + 1:]
+        href = 'https:' + href
+        r = scrapy.Request(url=href, callback=self.weibo_user_detail, headers=self)
+        r.meta['uid'] = uid
+        yield r
+
+    def weibo_user_detail(self, response):
+        uid = response.meta['uid']
+        mid = 1
+        name = response.xpath('//h1[@class="username"]/text()').extract_first()
+        gender = '未知'
+        if len(response.xpath('//i[@class="W_icon icon_pf_female"]')) > 0:
+            gender = "女"
+        elif len(response.xpath('//i[@class="W_icon icon_pf_male"]')) > 0:
+            gender = '男'
+        type = response.xpath('//li[@class="item S_line2 clearfix"]')[0].xpath(
+            './/span[@class="item_text W_fl"]/text()').extract_first()
+        introduction = response.xpath('//li[@class="item S_line2 clearfix"]')[1].xpath(
+            './/span[@class="item_text W_fl"]/text()').extract_first()
+        follow_num = response.xpath('//td[@class="S_line1"]')[0].xpath(
+            './/strong[@class="W_f16"]/text()').extract_first()
+        fan_num = response.xpath('//td[@class="S_line1"]')[1].xpath(
+            './/strong[@class="W_f16"]/text()').extract_first()
+        level = response.xpath('//span[class="W_icon_level icon_level_c5"]')[0].xpath(
+            'a/span/text()').extract()
 
     def zhihu_user_spider(self):
         for each in self.user_list:
@@ -190,5 +233,6 @@ class XuanchuanbuSpider(scrapy.Spider):
 
     def close(self, reason):
         print(len(self.article_list))
-        sentiment = Sentiment(self.article_list)
-        sentiment.analyze_article()
+        Sentiment().insert_into_user(self.monitor_user_list)
+        sentiment = Sentiment()
+        sentiment.analyze_article(self.article_list)
