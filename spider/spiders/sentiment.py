@@ -64,8 +64,8 @@ class Sentiment:
                 temp = [row[0], row[6]]
                 aid_text = copy.copy(temp)
                 self.aid_text_list.append(aid_text)
-                self.urls.append(row[6])
-                print(type(row[6]).__name__)
+                self.urls.append(row[6].decode('unicode_escape'))
+                # print(type(row[6]).__name__)
                 # str_date = re.search("[0-9]+.*[0-9]$", row[4]).group()
                 # row[4] = datetime.strptime(str_date, "%Y-%m-%d %H:%M")  # 转换日期格式
                 list1 = copy.copy(row)
