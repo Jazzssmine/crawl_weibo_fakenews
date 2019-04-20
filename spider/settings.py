@@ -21,9 +21,13 @@ SPIDER_MIDDLEWARES = {
 }
 DOWNLOADER_MIDDLEWARES = {
     'scrapy_splash.SplashCookiesMiddleware': 723,
+    'spider.middlewares.RandomUserAgentMiddaleware': 543,
     'scrapy_splash.SplashMiddleware': 725,
     'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
+    'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware': None,
 }
+
+# COOKIES_ENABLED = False
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = 'spider (+http://www.yourdomain.com)'
 

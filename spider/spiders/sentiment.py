@@ -13,7 +13,7 @@ from aip import AipNlp
 class Sentiment:
     def __init__(self):
         self.db = pymysql.connect("localhost", "xuanchuanbu", "xuanchuanbu", "xuanchuanbu",
-                                  3308)
+                                  3306)
         self.cursor = self.db.cursor()
 
     def insert_into_user(self, monitor_user_list):
