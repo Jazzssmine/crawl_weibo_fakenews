@@ -175,7 +175,7 @@ class XuanchuanbuSpider(scrapy.Spider):
         rdate = response.xpath("//div[contains(@id,'M_')]/div[last()]/span[last()]/text("
                                ")").extract_first()
         # rdate = re.match("\d+", rdate)
-        if not title:
+        if not title or title == '' or title.strip() == '':
             title = full_text[:15]
         if '今天' in rdate:
             rdate = datetime.datetime.today().strftime('%Y-%m-%d') + ' ' + rdate[3:]
