@@ -44,8 +44,8 @@ class XuanchuanbuSpider(scrapy.Spider):
         weixin = wb.sheet_by_index(0)
         weibo = wb.sheet_by_index(1)
         self.weixin_user_list = weixin.col_values(2, 1)
-        self.weibo_user_list = weibo.col_values(1, 1)
-        # self.weibo_user_list = [1634344227]
+        # self.weibo_user_list = weibo.col_values(1, 1)
+        self.weibo_user_list = [5743378762]
 
     # user_list = ['天津大学',
     #              '南开大学',
@@ -176,7 +176,7 @@ class XuanchuanbuSpider(scrapy.Spider):
                                ")").extract_first()
         # rdate = re.match("\d+", rdate)
         if not title or title == ' ' or title == '' or title.strip() == '':
-            title = full_text[:15]
+            title = full_text[:15].encode('utf8')
         if '今天' in rdate:
             rdate = datetime.datetime.today().strftime('%Y-%m-%d') + ' ' + rdate[3:]
         elif '分钟' in rdate:
