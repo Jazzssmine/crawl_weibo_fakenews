@@ -111,8 +111,7 @@ class XuanchuanbuSpider(scrapy.Spider):
         for div in divs:
             aid = div.xpath('@id').extract_first()
             url = div.xpath("div[last()]/a[last()-1]/@href").extract_first()
-            title = div.xpath('.//span[@class="ctt"]/text()').extract()
-            title = ''.join(title).strip()
+            title = div.xpath('.//span[@class="ctt"]/text()').extract_first()
             yield scrapy.Request(url=url, cookies=self.cookie, meta={'uid': uid, 'aid': aid,
                                                                      'title': title},
                                  callback=self.weibo_article_spider, dont_filter=True)
