@@ -111,7 +111,8 @@ class XuanchuanbuSpider(scrapy.Spider):
         for div in divs:
             aid = div.xpath('@id').extract_first()
             url = div.xpath("div[last()]/a[last()-1]/@href").extract_first()
-            title = div.xpath('.//span[@class="ctt"]/text()').extract_first()
+            title = div.xpath('.//span[@class="ctt"]/text()').extract()
+            title = ''.join(title).strip()
             yield scrapy.Request(url=url, cookies=self.cookie, meta={'uid': uid, 'aid': aid,
                                                                      'title': title},
                                  callback=self.weibo_article_spider, dont_filter=True)
@@ -175,7 +176,7 @@ class XuanchuanbuSpider(scrapy.Spider):
         rdate = response.xpath("//div[contains(@id,'M_')]/div[last()]/span[last()]/text("
                                ")").extract_first()
         # rdate = re.match("\d+", rdate)
-        if not title or title == '' or title.strip() == '':
+        if not title or title == ' ' or title == '' or title.strip() == '':
             title = full_text[:15]
         if '今天' in rdate:
             rdate = datetime.datetime.today().strftime('%Y-%m-%d') + ' ' + rdate[3:]
