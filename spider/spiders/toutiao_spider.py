@@ -18,18 +18,15 @@ class XuanchuanbuSpider(scrapy.Spider):
         'User-Agent: Mozilla': '5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, '
                                'like Gecko) Chrome/72.0.3626.121 Safari/537.36'
     }
-    cookie = {"_T_WM": "88510f592e13f85224f5d2cf249680e0", "ALF": "1554558588",
-              "SSOLoginState": "1551966589", "MLOGIN": "1", "WEIBOCN_FROM": "1110006030",
-              "SCF": "Ag_f8T4qg9uiN-Kts-jmnKjik99qkk417QqWSxUWfuIR7ScQmwdx1ZTv1qNkef9MG"
-                     "-iCdmrcB2Ty01KuajDaJ6M.",
-              "SUB":
-                  "_2A25xhVEtDeRhGeNM6VIS9ynOzz6IHXVShn9lrDV6PUJbktAKLVLEkW1NTi0IEzrDWytbBCrTUWStS9x4Jb4EwctO",
-              "SUBP": "0033WrSXqPxfM725Ws9jqgMF55529P9D9W5ZLIWa7nsxoxkjsm9b5Kyi5JpX5K-hUgL"
-                      ".Fo-Eeo50S0MEShz2dJLoIExQwPWLMJiads2LxK-L12qL12eLxKqL1-zLBozLxKMLB"
-                      ".2LB.qt",
-              "SUHB": "02MfezNbOQYvsK", "XSRF-TOKEN": "5b4193",
-              "M_WEIBOCN_PARAMS": "luicode%3D10000011%26lfid%3D1076031699432410%26uicode"
-                                  "%3D20000174"}
+    cookie = {"_T_WM": "9735bf2b61a01a741c47fd66e0b61eac", "ALF": "1558261237",
+              "SSOLoginState": "1555746919", "MLOGIN": "1",
+              "SCF":
+                  'ArgY-i3N6StMP1trO7TWYCPUpY6WmzfHBE7pxahb4EMAKQ51xPWzLHK7UaA3VbKXdiQlwWLVBZzCZTtiC_JzBWk.	',
+              "SUB": "_2A25xvqA3DeRhGeNM41UR8yvOyDuIHXVTQMB_rDV6PUJbktBeLWH1kW1NSfs-BCC2m"
+                     "-6779JpT0th9_ZqokrUGQCR	",
+              "SUBP": '0033WrSXqPxfM725Ws9jqgMF55529P9D9WWN9_YYbKrAOU_0jaRCxHX25JpX5K-hUgL'
+                      '.Fo-E1hM7e0-Ee0M2dJLoIpRLxKqL1KMLB.2LxKqL1KMLB.2LxKqL1KMLB.27eh5t	',
+              "SUHB": "0ebtO8fKVPYrg_	"}
 
     splash_args = {
         'wait': 3
@@ -44,8 +41,8 @@ class XuanchuanbuSpider(scrapy.Spider):
         weixin = wb.sheet_by_index(0)
         weibo = wb.sheet_by_index(1)
         self.weixin_user_list = weixin.col_values(2, 1)
-        # self.weibo_user_list = weibo.col_values(1, 1)
-        self.weibo_user_list = [5743378762]
+        self.weibo_user_list = weibo.col_values(1, 1)
+        # self.weibo_user_list = [2728331853]
 
     # user_list = ['天津大学',
     #              '南开大学',
@@ -66,7 +63,8 @@ class XuanchuanbuSpider(scrapy.Spider):
         # self.weibo_user_search()
         for each in self.weibo_user_list:
             url = 'https://weibo.cn/' + str(int(each))
-            r = scrapy.Request(url, callback=self.weibo_spider, cookies=self.cookie)
+            r = scrapy.Request(url, callback=self.weibo_spider, cookies=self.cookie,
+                               meta={'dont_redirect': True})
             r.meta['uid'] = str(int(each))
             yield r
             # self.toutiao_user_spider()
@@ -96,6 +94,8 @@ class XuanchuanbuSpider(scrapy.Spider):
     def weibo_spider(self, response):
         uid = response.meta['uid']
         tips = response.xpath("//div[@class='tip2']").xpath('string()').extract_first()
+        if not tips:
+            return
         tip = re.search("关注\[(\d+)\] 粉丝\[(\d+)\]", tips)
         follow_num = tip.group(1)
         fan_num = tip.group(2)
@@ -176,7 +176,7 @@ class XuanchuanbuSpider(scrapy.Spider):
                                ")").extract_first()
         # rdate = re.match("\d+", rdate)
         if not title or title == ' ' or title == '' or title.strip() == '':
-            title = full_text[:15].encode('utf8')
+            title = full_text[0:15]
         if '今天' in rdate:
             rdate = datetime.datetime.today().strftime('%Y-%m-%d') + ' ' + rdate[3:]
         elif '分钟' in rdate:
