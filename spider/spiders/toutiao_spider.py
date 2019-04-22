@@ -41,8 +41,8 @@ class XuanchuanbuSpider(scrapy.Spider):
     article_list = []
     monitor_user_list = []
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         wb = xlrd.open_workbook(filename='天津大学校园新媒体备案登记统计表.xlsx')  # 打开文件
         weixin = wb.sheet_by_index(0)
         weibo = wb.sheet_by_index(1)
@@ -125,13 +125,6 @@ class XuanchuanbuSpider(scrapy.Spider):
     def weibo_user_spider(self, response):
         # level = response.xpath("/html/body/div[4]//text()").extract_first()
         # level = re.search('会员等级[：:]?(\d)(.*?)', level).group(1)
-        if response.status == 403:
-            temp = self.cookie['_T_WM']
-            print(temp)
-            temp[random.choice(range(0, len(temp)))] = random.choice(temp)
-            self.cookie['_T_WM'] = temp
-            return scrapy.Request(url=response.url, cookies=self.cookie, meta=response.meta,
-                                  callback=self.weibo_article_spider, dont_filter=True)
         level = 0
         tips = response.xpath("/html/body/div[6]//text()").extract()
         tip = ''
@@ -175,13 +168,6 @@ class XuanchuanbuSpider(scrapy.Spider):
         self.monitor_user_list.append(line)
 
     def weibo_article_spider(self, response):
-        if response.status == 403:
-            temp = self.cookie['_T_WM']
-            print(temp)
-            temp[random.choice(range(0, len(temp)))] = random.choice(temp)
-            self.cookie['_T_WM'] = temp
-            return scrapy.Request(url=response.url, cookies=self.cookie, meta=response.meta,
-                                  callback=self.weibo_article_spider, dont_filter=True)
         uid = response.meta['uid']
         aid = response.meta['aid']
         title = response.meta['title']
