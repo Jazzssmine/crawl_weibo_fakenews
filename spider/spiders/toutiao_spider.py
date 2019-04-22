@@ -9,24 +9,30 @@ from scrapy_splash import SplashRequest
 from spider.spiders.sentiment import Sentiment
 import datetime
 import xlrd
+import random
 
 
 class XuanchuanbuSpider(scrapy.Spider):
     name = 'toutiao'
-    start_urls = []
     headers = {
         'User-Agent: Mozilla': '5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, '
                                'like Gecko) Chrome/72.0.3626.121 Safari/537.36'
     }
-    cookie = {"_T_WM": "9735bf2b61a01a741c47fd66e0b61eac", "ALF": "1558261237",
-              "SSOLoginState": "1555746919", "MLOGIN": "1",
-              "SCF":
-                  'ArgY-i3N6StMP1trO7TWYCPUpY6WmzfHBE7pxahb4EMAKQ51xPWzLHK7UaA3VbKXdiQlwWLVBZzCZTtiC_JzBWk.	',
-              "SUB": "_2A25xvqA3DeRhGeNM41UR8yvOyDuIHXVTQMB_rDV6PUJbktBeLWH1kW1NSfs-BCC2m"
-                     "-6779JpT0th9_ZqokrUGQCR	",
-              "SUBP": '0033WrSXqPxfM725Ws9jqgMF55529P9D9WWN9_YYbKrAOU_0jaRCxHX25JpX5K-hUgL'
-                      '.Fo-E1hM7e0-Ee0M2dJLoIpRLxKqL1KMLB.2LxKqL1KMLB.2LxKqL1KMLB.27eh5t	',
-              "SUHB": "0ebtO8fKVPYrg_	"}
+    cookie = {"_T_WM": "88510f592e13f85224f5d2cf249680e0",
+              "ALF": "1554558588",
+              "SSOLoginState": "1551966589",
+              "MLOGIN": "1",
+              "WEIBOCN_FROM": "1110006030",
+              "SCF": "Ag_f8T4qg9uiN-Kts-jmnKjik99qkk417QqWSxUWfuIR7ScQmwdx1ZTv1qNkef9MG"
+                     "-iCdmrcB2Ty01KuajDaJ6M.",
+              "SUB":
+                  "_2A25xhVEtDeRhGeNM6VIS9ynOzz6IHXVShn9lrDV6PUJbktAKLVLEkW1NTi0IEzrDWytbBCrTUWStS9x4Jb4EwctO",
+              "SUBP": "0033WrSXqPxfM725Ws9jqgMF55529P9D9W5ZLIWa7nsxoxkjsm9b5Kyi5JpX5K-hUgL.Fo"
+                      "-Eeo50S0MEShz2dJLoIExQwPWLMJiads2LxK-L12qL12eLxKqL1-zLBozLxKMLB.2LB.qt",
+              "SUHB": "02MfezNbOQYvsK",
+              "XSRF-TOKEN": "5b4193",
+              "M_WEIBOCN_PARAMS": "luicode%3D10000011%26lfid%3D1076031699432410%26uicode"
+                                  "%3D20000174"}
 
     splash_args = {
         'wait': 3
@@ -119,6 +125,13 @@ class XuanchuanbuSpider(scrapy.Spider):
     def weibo_user_spider(self, response):
         # level = response.xpath("/html/body/div[4]//text()").extract_first()
         # level = re.search('会员等级[：:]?(\d)(.*?)', level).group(1)
+        if response.status == 403:
+            temp = self.cookie['_T_WM']
+            print(temp)
+            temp[random.choice(range(0, len(temp)))] = random.choice(temp)
+            self.cookie['_T_WM'] = temp
+            return scrapy.Request(url=response.url, cookies=self.cookie, meta=response.meta,
+                                  callback=self.weibo_article_spider, dont_filter=True)
         level = 0
         tips = response.xpath("/html/body/div[6]//text()").extract()
         tip = ''
@@ -162,6 +175,13 @@ class XuanchuanbuSpider(scrapy.Spider):
         self.monitor_user_list.append(line)
 
     def weibo_article_spider(self, response):
+        if response.status == 403:
+            temp = self.cookie['_T_WM']
+            print(temp)
+            temp[random.choice(range(0, len(temp)))] = random.choice(temp)
+            self.cookie['_T_WM'] = temp
+            return scrapy.Request(url=response.url, cookies=self.cookie, meta=response.meta,
+                                  callback=self.weibo_article_spider, dont_filter=True)
         uid = response.meta['uid']
         aid = response.meta['aid']
         title = response.meta['title']

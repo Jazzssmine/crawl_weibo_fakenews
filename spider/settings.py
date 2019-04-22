@@ -26,6 +26,7 @@ DOWNLOADER_MIDDLEWARES = {
     'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
     'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware': None,
 }
+HTTPERROR_ALLOWED_CODES = [403]
 
 # COOKIES_ENABLED = False
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
