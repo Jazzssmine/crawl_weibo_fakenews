@@ -15,7 +15,7 @@ def job():
 sched = BlockingScheduler()
 
 
-@sched.scheduled_job('interval', seconds=60 * 60, next_run_time=datetime.datetime.now())
+@sched.scheduled_job('interval', seconds=60 * 30, next_run_time=datetime.datetime.now())
 def run():
     process = multiprocessing.Process(target=job)
     process.start()
