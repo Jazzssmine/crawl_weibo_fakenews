@@ -17,18 +17,38 @@ class Sentiment:
         self.cursor = self.db.cursor()
 
     def insert_into_user(self, monitor_user_list):
-        sql = "REPLACE INTO monitor_user(`uid`, `mid`, `name`, `gender`, `type`, " \
+        sql = "INSERT INTO monitor_user(`uid`, `mid`, `name`, `gender`, `type`, " \
               "`follow_num`, `fan_num`, `level`, `address`, `school`, `introduction`, " \
               "`v_flag`, `v_info`, `img_url`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s," \
-              "%s,%s)"
+              "%s,%s) ON DUPLICATE KEY UPDATE" \
+              "`name`=VALUES(`name`)," \
+              "`gender`=VALUES(`gender`)," \
+              "`type`=VALUES(`type`)," \
+              "`follow_num`=VALUES(`follow_num`)," \
+              "`fan_num`=VALUES(`fan_num`)," \
+              "`level`=VALUES(`level`)," \
+              "`address`=VALUES(`address`)," \
+              "`school`=VALUES(`school`)," \
+              "`introduction`=VALUES(`introduction`)," \
+              "`v_flag`=VALUES(`v_flag`)," \
+              "`v_info`=VALUES(`v_info`)," \
+              "`img_url`=VALUES(`img_url`)"
         self.cursor.executemany(sql, monitor_user_list)
         self.db.commit()
 
     def insert_into_articles(self):
         print(u'正在插入articles表')
-        sql = "REPLACE INTO articles(`aid`, `uid`, `mid`, `title`, `rdate`, `summary`, " \
+        sql = "INSERT INTO articles(`aid`, `uid`, `mid`, `title`, `rdate`, `summary`, " \
               "`full_text`, " \
-              "`url`, `relate_tju`, `p_or_n`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+              "`url`, `relate_tju`, `p_or_n`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)" \
+              "ON DUPLICATE KEY UPDATE" \
+              "`title`=VALUES(`title`)," \
+              "`rdate`=VALUES(`rdate`)," \
+              "`summary`=VALUES(`summary`)," \
+              "`full_text`=VALUES(`full_text`)," \
+              "`url`=VALUES(`url`)," \
+              "`relate_tju`=VALUES(`relate_tju`)," \
+              "`p_or_n`=VALUES(`p_or_n`)"
         self.cursor.executemany(sql, self.article_list)
         self.db.commit()
 
