@@ -39,15 +39,10 @@ class Sentiment:
     def insert_into_articles(self):
         print(u'正在插入articles表')
         sql = "INSERT INTO articles(`aid`, `uid`, `mid`, `title`, `rdate`, `summary`, " \
-              "`full_text`, " \
-              "`url`, `relate_tju`, `p_or_n`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)" \
-              "ON DUPLICATE KEY UPDATE" \
-              "`title`=VALUES(`title`)," \
-              "`rdate`=VALUES(`rdate`)," \
-              "`summary`=VALUES(`summary`)," \
-              "`full_text`=VALUES(`full_text`)," \
-              "`url`=VALUES(`url`)," \
-              "`relate_tju`=VALUES(`relate_tju`)," \
+              "`full_text`, `url`, `relate_tju`,`tool`, `p_or_n`) VALUES (%s,%s,%s,%s,%s,%s," \
+              "%s,%s,%s,%s,%s)ON DUPLICATE KEY UPDATE`title`=VALUES(`title`),`rdate`=VALUES(" \
+              "`rdate`),`summary`=VALUES(`summary`),`full_text`=VALUES(`full_text`)," \
+              "`url`=VALUES(`url`),`relate_tju`=VALUES(`relate_tju`),`tool`=VALUES(`tool`)," \
               "`p_or_n`=VALUES(`p_or_n`)"
         self.cursor.executemany(sql, self.article_list)
         self.db.commit()

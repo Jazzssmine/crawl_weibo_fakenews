@@ -43,11 +43,11 @@ class XuanchuanbuSpider(scrapy.Spider):
     sentiment = Sentiment()
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        wb = xlrd.open_workbook(filename='天津大学校园新媒体备案登记统计表.xlsx')  # 打开文件
-        weixin = wb.sheet_by_index(0)
-        weibo = wb.sheet_by_index(1)
-        self.weixin_user_list = weixin.col_values(2, 1)
+        super(XuanchuanbuSpider, self).__init__(**kwargs)
+        # wb = xlrd.open_workbook(filename='天津大学校园新媒体备案登记统计表.xlsx')  # 打开文件
+        # weixin = wb.sheet_by_index(0)
+        # weibo = wb.sheet_by_index(1)
+        # self.weixin_user_list = weixin.col_values(2, 1)
         # self.weibo_user_list = weibo.col_values(1, 1)
         self.weibo_user_list = self.sentiment.getWeiboUsers()
         # self.weibo_user_list = [2728331853]
@@ -119,9 +119,13 @@ class XuanchuanbuSpider(scrapy.Spider):
         for div in divs:
             aid = div.xpath('@id').extract_first()
             url = div.xpath("div[last()]/a[last()-1]/@href").extract_first()
+            tool = div.xpath("div[last()]/span[last()]//text()").extract()
+            tool = ''.join(tool)
+            tool = re.findall('来自(.*?)$', tool)[0]
             title = div.xpath('.//span[@class="ctt"]/text()').extract_first()
             yield scrapy.Request(url=url, cookies=self.cookie, meta={'uid': uid, 'aid': aid,
-                                                                     'title': title},
+                                                                     'title': title,
+                                                                     'tool': tool},
                                  callback=self.weibo_article_spider, dont_filter=True)
 
     def weibo_user_spider(self, response):
@@ -171,17 +175,18 @@ class XuanchuanbuSpider(scrapy.Spider):
 
     def weibo_article_spider(self, response):
         uid = response.meta['uid']
-        aid = response.meta['aid']
+        aid = response.meta['aid'][2:]
         title = response.meta['title']
-        url = response.url
+        tool = response.meta['tool']
+        url = 'https://weibo.com/%s/%s' % (uid, aid)
         div = response.xpath("//div[@id='M_']/div")
         context = div.xpath('string()').extract_first().replace(" ", "").replace(u"\xa0", "")
         # print(context)
         x = context.split(":", 1)
         full_text = x[1]
         relate_tju = 1 if '天津大学' in full_text else 0
-        rdate = response.xpath("//div[contains(@id,'M_')]/div[last()]/span[last()]/text("
-                               ")").extract_first()
+        rdate = response.xpath('//div[contains(@id,"M_")]/div[last()]/span[last('
+                               ')]/text()')[0].extract()
         # rdate = re.match("\d+", rdate)
         if not title or title == ' ' or title == '' or title.strip() == '':
             title = full_text[0:15]
@@ -199,7 +204,7 @@ class XuanchuanbuSpider(scrapy.Spider):
             rdate = time.strptime(str(time.localtime().tm_year) + '年' + rdate.strip(),
                                   '%Y年%m月%d日 %H:%M')
             rdate = time.strftime("%Y-%m-%d %H:%M:%S", rdate)
-        line = [aid, uid, 1, title, rdate.strip(), '', full_text, url, relate_tju]
+        line = [aid, uid, 1, title, rdate.strip(), '', full_text, url, relate_tju, tool]
         print(line)
         self.article_list.append(line)
 
