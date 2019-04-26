@@ -40,6 +40,7 @@ class XuanchuanbuSpider(scrapy.Spider):
     user_list = []
     article_list = []
     monitor_user_list = []
+    sentiment = Sentiment()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -47,7 +48,8 @@ class XuanchuanbuSpider(scrapy.Spider):
         weixin = wb.sheet_by_index(0)
         weibo = wb.sheet_by_index(1)
         self.weixin_user_list = weixin.col_values(2, 1)
-        self.weibo_user_list = weibo.col_values(1, 1)
+        # self.weibo_user_list = weibo.col_values(1, 1)
+        self.weibo_user_list = self.sentiment.getWeiboUsers()
         # self.weibo_user_list = [2728331853]
 
     # user_list = ['天津大学',
@@ -68,10 +70,10 @@ class XuanchuanbuSpider(scrapy.Spider):
         self.article_list = []
         # self.weibo_user_search()
         for each in self.weibo_user_list:
-            url = 'https://weibo.cn/' + str(int(each))
+            url = 'https://weibo.cn/' + each
             r = scrapy.Request(url, callback=self.weibo_spider, cookies=self.cookie,
                                meta={'dont_redirect': True})
-            r.meta['uid'] = str(int(each))
+            r.meta['uid'] = each
             yield r
             # self.toutiao_user_spider()
             # self.zhihu_user_spider()
@@ -329,6 +331,5 @@ class XuanchuanbuSpider(scrapy.Spider):
     def close(self, reason):
         print(len(self.monitor_user_list))
         print(len(self.article_list))
-        Sentiment().insert_into_user(self.monitor_user_list)
-        sentiment = Sentiment()
-        sentiment.analyze_article(self.article_list)
+        self.sentiment.insert_into_user(self.monitor_user_list)
+        self.sentiment.analyze_article(self.article_list)
