@@ -75,16 +75,15 @@ class Sentiment:
         self.total_data = []
         self.aid_text_list = []
         for row in article_list:
-            if len(row) == 9:  # 判断每条数据是否由8个字段组成
-                temp = [row[0], row[6]]
-                aid_text = copy.copy(temp)
-                self.aid_text_list.append(aid_text)
-                self.urls.append(row[6])
-                # print(type(row[6]).__name__)
-                # str_date = re.search("[0-9]+.*[0-9]$", row[4]).group()
-                # row[4] = datetime.strptime(str_date, "%Y-%m-%d %H:%M")  # 转换日期格式
-                list1 = copy.copy(row)
-                self.total_data.append(list1)
+            temp = [row[0], row[6]]
+            aid_text = copy.copy(temp)
+            self.aid_text_list.append(aid_text)
+            self.urls.append(row[6])
+            # print(type(row[6]).__name__)
+            # str_date = re.search("[0-9]+.*[0-9]$", row[4]).group()
+            # row[4] = datetime.strptime(str_date, "%Y-%m-%d %H:%M")  # 转换日期格式
+            list1 = copy.copy(row)
+            self.total_data.append(list1)
 
     def sentimentClassify(self):
         """ 你的 APPID AK SK """
