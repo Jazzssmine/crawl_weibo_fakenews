@@ -176,6 +176,7 @@ class XuanchuanbuSpider(scrapy.Spider):
                 img_url]
         print(line)
         self.monitor_user_list.append(line)
+        time.sleep(0.5)
 
     def weibo_article_spider(self, response):
         uid = response.meta['uid']
@@ -211,6 +212,7 @@ class XuanchuanbuSpider(scrapy.Spider):
         line = [aid, uid, 1, title, rdate.strip(), '', full_text, url, relate_tju, tool]
         print(line)
         self.article_list.append(line)
+        time.sleep(0.5)
 
     def zhihu_user_spider(self):
         for each in self.user_list:
