@@ -121,7 +121,11 @@ class XuanchuanbuSpider(scrapy.Spider):
             url = div.xpath("div[last()]/a[last()-1]/@href").extract_first()
             tool = div.xpath("div[last()]/span[last()]//text()").extract()
             tool = ''.join(tool)
-            tool = re.findall('来自(.*?)$', tool)[0]
+            tool = re.findall('来自(.*?)$', tool)
+            if tool:
+                tool = tool[0]
+            else:
+                tool = '未知'
             title = div.xpath('.//span[@class="ctt"]/text()').extract_first()
             yield scrapy.Request(url=url, cookies=self.cookie, meta={'uid': uid, 'aid': aid,
                                                                      'title': title,
