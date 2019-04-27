@@ -115,8 +115,11 @@ class XuanchuanbuSpider(scrapy.Spider):
         r.meta['follow_num'] = follow_num
         yield r
 
+        i = 0
         divs = response.xpath("//div[@class='c' and @id]")
         for div in divs:
+            if i > 3:
+                break
             aid = div.xpath('@id').extract_first()
             url = div.xpath("div[last()]/a[last()-1]/@href").extract_first()
             tool = div.xpath("div[last()]/span[last()]//text()").extract()
@@ -131,6 +134,7 @@ class XuanchuanbuSpider(scrapy.Spider):
                                                                      'title': title,
                                                                      'tool': tool},
                                  callback=self.weibo_article_spider, dont_filter=True)
+            i += 1
 
     def weibo_user_spider(self, response):
         # level = response.xpath("/html/body/div[4]//text()").extract_first()
@@ -176,7 +180,6 @@ class XuanchuanbuSpider(scrapy.Spider):
                 img_url]
         print(line)
         self.monitor_user_list.append(line)
-        time.sleep(0.2)
 
     def weibo_article_spider(self, response):
         uid = response.meta['uid']
@@ -212,7 +215,7 @@ class XuanchuanbuSpider(scrapy.Spider):
         line = [aid, uid, 1, title, rdate.strip(), '', full_text, url, relate_tju, tool]
         print(line)
         self.article_list.append(line)
-        time.sleep(0.2)
+        time.sleep(0.5)
 
     def zhihu_user_spider(self):
         for each in self.user_list:
