@@ -118,7 +118,7 @@ class XuanchuanbuSpider(scrapy.Spider):
         i = 0
         divs = response.xpath("//div[@class='c' and @id]")
         for div in divs:
-            if i > 3:
+            if i > 2:
                 break
             aid = div.xpath('@id').extract_first()
             url = div.xpath("div[last()]/a[last()-1]/@href").extract_first()
