@@ -8,6 +8,7 @@ import random
 
 from scrapy import signals
 from scrapy.downloadermiddlewares.useragent import UserAgentMiddleware
+from scrapy.downloadermiddlewares.cookies import CookiesMiddleware
 
 
 class SpiderSpiderMiddleware(object):
@@ -105,7 +106,7 @@ class SpiderDownloaderMiddleware(object):
         spider.logger.info('Spider opened: %s' % spider.name)
 
 
-class RandomUserAgentMiddaleware(UserAgentMiddleware):
+class RandomUserAgentMiddleware(UserAgentMiddleware):
     USER_AGENT_LIST = [
         "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) "
         "Chrome/22.0.1207.1 Safari/537.1",
@@ -150,3 +151,37 @@ class RandomUserAgentMiddaleware(UserAgentMiddleware):
     def process_request(self, request, spider):
         ua = random.choice(self.USER_AGENT_LIST)
         request.headers.setdefault('User-Agent', ua)
+
+
+class RandomCookieMiddleware(CookiesMiddleware):
+    cookies = [
+        {"_T_WM": "88510f592e13f85224f5d2cf249680e0",
+         "ALF": "1554558588",
+         "SSOLoginState": "1551966589",
+         "MLOGIN": "1",
+         "WEIBOCN_FROM": "1110006030",
+         "SCF": "Ag_f8T4qg9uiN-Kts-jmnKjik99qkk417QqWSxUWfuIR7ScQmwdx1ZTv1qNkef9MG"
+                "-iCdmrcB2Ty01KuajDaJ6M.",
+         "SUB":
+             "_2A25xhVEtDeRhGeNM6VIS9ynOzz6IHXVShn9lrDV6PUJbktAKLVLEkW1NTi0IEzrDWytbBCrTUWStS9x4Jb4EwctO",
+         "SUBP": "0033WrSXqPxfM725Ws9jqgMF55529P9D9W5ZLIWa7nsxoxkjsm9b5Kyi5JpX5K-hUgL.Fo"
+                 "-Eeo50S0MEShz2dJLoIExQwPWLMJiads2LxK-L12qL12eLxKqL1-zLBozLxKMLB.2LB.qt",
+         "SUHB": "02MfezNbOQYvsK",
+         "XSRF-TOKEN": "5b4193",
+         "M_WEIBOCN_PARAMS": "luicode%3D10000011%26lfid%3D1076031699432410%26uicode"
+                             "%3D20000174"
+         },
+        {
+            '_T_WM': '0a4e6de7f4368f0744db9da0b49764d9',
+            'SUHB': '0gHiCx6v6L-7-9',
+            'SUB': '_2A25xwvPGDeRhGeNM41UR8yvOyDuIHXVTTJ2OrDV6PUJbkdANLXjMkW1NSfs'
+                   '-BIgTrYBypxzLp2y77qRA99bRnEwc',
+            'SSOLoginState': '1556513686',
+            'SCF':
+                'Aruo4LIGk4ZdrhO2o3gg7Ev6RrE0sx7r8AQysYsb2G0FurB8iv63hEXzdfdPz_WBO7c81lBv35b5yhdMblvkrCQ.'
+        }
+    ]
+
+    def process_request(self, request, spider):
+        cookie = random.choice(self.cookies)
+        request.cookies = cookie

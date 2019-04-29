@@ -13,7 +13,7 @@ from aip import AipNlp
 class Sentiment:
     def __init__(self):
         self.db = pymysql.connect("localhost", "xuanchuanbu", "xuanchuanbu", "xuanchuanbu",
-                                  3306)
+                                  3306, charset='utf8mb4')
         self.cursor = self.db.cursor()
 
     def insert_into_user(self, monitor_user_list):
@@ -147,7 +147,7 @@ class Sentiment:
                         self.pp.append(1)
                     else:
                         self.pp.append(-1)
-                time.sleep(0.2)
+                # time.sleep(0.2)
 
     def re_combine_data(self):
         for i in range(0, len(self.pp)):

@@ -71,8 +71,7 @@ class XuanchuanbuSpider(scrapy.Spider):
         # self.weibo_user_search()
         for each in self.weibo_user_list:
             url = 'https://weibo.cn/' + each
-            r = scrapy.Request(url, callback=self.weibo_spider, cookies=self.cookie,
-                               meta={'dont_redirect': True})
+            r = scrapy.Request(url, callback=self.weibo_spider, meta={'dont_redirect': True})
             r.meta['uid'] = each
             yield r
             # self.toutiao_user_spider()
@@ -108,7 +107,7 @@ class XuanchuanbuSpider(scrapy.Spider):
         follow_num = tip.group(1)
         fan_num = tip.group(2)
 
-        r = scrapy.Request(url="https://weibo.cn/%s/info" % uid, cookies=self.cookie,
+        r = scrapy.Request(url="https://weibo.cn/%s/info" % uid,
                            callback=self.weibo_user_spider, dont_filter=True)
         r.meta['uid'] = uid
         r.meta['fan_num'] = fan_num
@@ -130,9 +129,8 @@ class XuanchuanbuSpider(scrapy.Spider):
             else:
                 tool = '未知'
             title = div.xpath('.//span[@class="ctt"]/text()').extract_first()
-            yield scrapy.Request(url=url, cookies=self.cookie, meta={'uid': uid, 'aid': aid,
-                                                                     'title': title,
-                                                                     'tool': tool},
+            yield scrapy.Request(url=url,
+                                 meta={'uid': uid, 'aid': aid, 'title': title, 'tool': tool},
                                  callback=self.weibo_article_spider, dont_filter=True)
             i += 1
 
@@ -215,7 +213,7 @@ class XuanchuanbuSpider(scrapy.Spider):
         line = [aid, uid, 1, title, rdate.strip(), '', full_text, url, relate_tju, tool]
         print(line)
         self.article_list.append(line)
-        time.sleep(0.5)
+        # time.sleep(0.5)
 
     def zhihu_user_spider(self):
         for each in self.user_list:

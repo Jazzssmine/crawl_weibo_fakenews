@@ -14,16 +14,17 @@ BOT_NAME = 'spider'
 SPIDER_MODULES = ['spider.spiders']
 NEWSPIDER_MODULE = 'spider.spiders'
 
-SPLASH_URL = 'http://localhost:8050'
-DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
-SPIDER_MIDDLEWARES = {
-    'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
-}
+# SPLASH_URL = 'http://localhost:8050'
+# DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
+# SPIDER_MIDDLEWARES = {
+#     'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
+# }
 DOWNLOADER_MIDDLEWARES = {
+    'spider.middlewares.RandomUserAgentMiddleware': 543,
+    'spider.middlewares.RandomCookieMiddleware': 542,
     'scrapy.contrib.downloadermiddleware.useragent.UserAgentMiddleware': None,
-    'scrapy_splash.SplashCookiesMiddleware': 723,
-    'spider.middlewares.RandomUserAgentMiddaleware': 543,
-    'scrapy_splash.SplashMiddleware': 725,
+    # 'scrapy_splash.SplashCookiesMiddleware': 723,
+    # 'scrapy_splash.SplashMiddleware': 725,
     'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810
 }
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
