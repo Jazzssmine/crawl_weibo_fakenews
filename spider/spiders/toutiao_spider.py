@@ -138,7 +138,7 @@ class XuanchuanbuSpider(scrapy.Spider):
         # level = response.xpath("/html/body/div[4]//text()").extract_first()
         # level = re.search('会员等级[：:]?(\d)(.*?)', level).group(1)
         level = 0
-        tips = response.xpath("/html/body/div[6]//text()").extract()
+        tips = response.xpath("/html/body//div[@class='c'][3]//text()").extract()
         tip = ''
         for x in tips:
             tip = tip + x + ","
@@ -213,7 +213,7 @@ class XuanchuanbuSpider(scrapy.Spider):
         line = [aid, uid, 1, title, rdate.strip(), '', full_text, url, relate_tju, tool]
         print(line)
         self.article_list.append(line)
-        # time.sleep(0.5)
+        time.sleep(0.2)
 
     def zhihu_user_spider(self):
         for each in self.user_list:

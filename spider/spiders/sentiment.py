@@ -147,7 +147,7 @@ class Sentiment:
                         self.pp.append(1)
                     else:
                         self.pp.append(-1)
-                # time.sleep(0.2)
+                time.sleep(0.2)
 
     def re_combine_data(self):
         for i in range(0, len(self.pp)):
