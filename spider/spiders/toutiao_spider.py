@@ -147,7 +147,7 @@ class XuanchuanbuSpider(scrapy.Spider):
         address = re.search('地区[：:]?(.*?),', tip)
         introduction = re.search('简介[：:]?(.*?),', tip)
         v_info = re.search('认证[：:]?(.*?),', tip)
-        img_url = response.xpath("/html/body/div[3]/img/@src").extract_first()
+        img_url = response.xpath("/html/body//div[@class='c'][1]/img/@src").extract_first()
 
         if name and name.group(1):
             name = name.group(1)
