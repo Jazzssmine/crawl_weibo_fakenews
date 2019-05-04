@@ -22,5 +22,5 @@ def run():
 
 
 if __name__ == '__main__':
-    sched.start()
-    # job()
+    # sched.start()
+    job()
