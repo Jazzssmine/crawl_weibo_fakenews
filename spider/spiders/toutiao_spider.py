@@ -213,7 +213,7 @@ class XuanchuanbuSpider(scrapy.Spider):
         line = [aid, uid, 1, title, rdate.strip(), '', full_text, url, relate_tju, tool]
         print(line)
         self.article_list.append(line)
-        time.sleep(0.2)
+        time.sleep(0.4)
 
     def zhihu_user_spider(self):
         for each in self.user_list:
