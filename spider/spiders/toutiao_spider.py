@@ -50,6 +50,7 @@ class XuanchuanbuSpider(scrapy.Spider):
         # self.weixin_user_list = weixin.col_values(2, 1)
         # self.weibo_user_list = weibo.col_values(1, 1)
         self.weibo_user_list = self.sentiment.getWeiboUsers()
+        self.article_history = self.sentiment.getWeiboArticles()
         # self.weibo_user_list = [2728331853]
 
     # user_list = ['天津大学',
@@ -119,19 +120,21 @@ class XuanchuanbuSpider(scrapy.Spider):
         for div in divs:
             if i > 2:
                 break
-            aid = div.xpath('@id').extract_first()
-            url = div.xpath("div[last()]/a[last()-1]/@href").extract_first()
-            tool = div.xpath("div[last()]/span[last()]//text()").extract()
-            tool = ''.join(tool)
-            tool = re.findall('来自(.*?)$', tool)
-            if tool:
-                tool = tool[0]
-            else:
-                tool = '未知'
-            title = div.xpath('.//span[@class="ctt"]/text()').extract_first()
-            yield scrapy.Request(url=url,
-                                 meta={'uid': uid, 'aid': aid, 'title': title, 'tool': tool},
-                                 callback=self.weibo_article_spider, dont_filter=True)
+            aid = div.xpath('@id').extract_first()[2:]
+            if aid not in self.article_history:
+                url = div.xpath("div[last()]/a[last()-1]/@href").extract_first()
+                tool = div.xpath("div[last()]/span[last()]//text()").extract()
+                tool = ''.join(tool)
+                tool = re.findall('来自(.*?)$', tool)
+                if tool:
+                    tool = tool[0]
+                else:
+                    tool = '未知'
+                title = div.xpath('.//span[@class="ctt"]/text()').extract_first()
+                yield scrapy.Request(url=url,
+                                     meta={'uid': uid, 'aid': aid, 'title': title,
+                                           'tool': tool},
+                                     callback=self.weibo_article_spider, dont_filter=True)
             i += 1
 
     def weibo_user_spider(self, response):
@@ -181,7 +184,7 @@ class XuanchuanbuSpider(scrapy.Spider):
 
     def weibo_article_spider(self, response):
         uid = response.meta['uid']
-        aid = response.meta['aid'][2:]
+        aid = response.meta['aid']
         title = response.meta['title']
         tool = response.meta['tool']
         url = 'https://weibo.com/%s/%s' % (uid, aid)

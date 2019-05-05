@@ -156,13 +156,22 @@ class Sentiment:
             self.article_list[i].append(j)  # 向数据列表中插入极性分析的结果
 
     def getWeiboUsers(self):
-        sql = "SELECT uid FROM monitor_user WHERE mid=1 LIMIT 50"
+        sql = "SELECT uid FROM monitor_user WHERE mid=1"
         self.cursor.execute(sql)
         rows = self.cursor.fetchall()
         userList = []
         for row in rows:
             userList.append(row[0])
         return userList
+
+    def getWeiboArticles(self):
+        sql = "SELECT aid FROM articles WHERE mid=1"
+        self.cursor.execute(sql)
+        rows = self.cursor.fetchall()
+        articleList = []
+        for row in rows:
+            articleList.append(row[0])
+        return articleList
 
     def analyze_article(self, article_list):
         self.output(article_list)
@@ -175,6 +184,6 @@ class Sentiment:
 
 if __name__ == '__main__':
     sentiment = Sentiment()
-    users = sentiment.getWeiboUsers()
+    users = sentiment.getWeiboArticles()
     for each in users:
-        print(type(each))
+        print(each)
