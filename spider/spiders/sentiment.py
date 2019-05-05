@@ -156,7 +156,7 @@ class Sentiment:
             self.article_list[i].append(j)  # 向数据列表中插入极性分析的结果
 
     def getWeiboUsers(self):
-        sql = "SELECT uid FROM monitor_user WHERE mid=1"
+        sql = "SELECT uid FROM monitor_user WHERE mid=1 LIMIT 50"
         self.cursor.execute(sql)
         rows = self.cursor.fetchall()
         userList = []
