@@ -8,31 +8,26 @@ import numpy as np
 import pymysql
 import time
 from aip import AipNlp
+import datetime
 
 
 class Sentiment:
     def __init__(self):
-        self.db = pymysql.connect("localhost", "xuanchuanbu", "xuanchuanbu", "xuanchuanbu",
-                                  3306, charset='utf8mb4')
+        self.db = pymysql.connect("hyuun.cn", "xuanchuanbu", "xuanchuanbu",
+                                  "xuanchuanbu",
+                                  3308, charset='utf8mb4')
         self.cursor = self.db.cursor()
 
     def insert_into_user(self, monitor_user_list):
         sql = "INSERT INTO monitor_user(`uid`, `mid`, `name`, `gender`, `type`, " \
               "`follow_num`, `fan_num`, `level`, `address`, `school`, `introduction`, " \
-              "`v_flag`, `v_info`, `img_url`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s," \
-              "%s,%s) ON DUPLICATE KEY UPDATE" \
-              "`name`=VALUES(`name`)," \
-              "`gender`=VALUES(`gender`)," \
-              "`type`=VALUES(`type`)," \
-              "`follow_num`=VALUES(`follow_num`)," \
-              "`fan_num`=VALUES(`fan_num`)," \
-              "`level`=VALUES(`level`)," \
-              "`address`=VALUES(`address`)," \
-              "`school`=VALUES(`school`)," \
-              "`introduction`=VALUES(`introduction`)," \
-              "`v_flag`=VALUES(`v_flag`)," \
-              "`v_info`=VALUES(`v_info`)," \
-              "`img_url`=VALUES(`img_url`)"
+              "`v_flag`, `v_info`, `img_url`, `last_time`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s," \
+              "%s,%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE`name`=VALUES(`name`)," \
+              "`gender`=VALUES(`gender`),`type`=VALUES(`type`),`follow_num`=VALUES(" \
+              "`follow_num`),`fan_num`=VALUES(`fan_num`),`level`=VALUES(`level`)," \
+              "`address`=VALUES(`address`),`school`=VALUES(`school`),`introduction`=VALUES(" \
+              "`introduction`),`v_flag`=VALUES(`v_flag`),`v_info`=VALUES(`v_info`)," \
+              "`img_url`=VALUES(`img_url`),`last_time`=VALUES(`last_time`)"
         self.cursor.executemany(sql, monitor_user_list)
         self.db.commit()
 
@@ -156,13 +151,97 @@ class Sentiment:
             self.article_list[i].append(j)  # 向数据列表中插入极性分析的结果
 
     def getWeiboUsers(self):
-        sql = "SELECT uid FROM monitor_user WHERE mid=1"
+        sql = """
+        SELECT
+		t.uid,
+		t.mid,
+		`name`,
+		gender,
+		`type`,
+		follow_num,
+		fan_num,
+		`level`,
+		address,
+		school,
+		introduction,
+		v_flag,
+		v_info,
+		img_url,
+      t.last_time,
+		ff + af + IFNULL(`if`, 0) AS activity
+		FROM
+		(
+		SELECT
+		monitor_user.id,
+		monitor_user.uid,
+		monitor_user.mid,
+		monitor_user.name,
+		mname,
+		monitor_user.gender,
+		monitor_user.type,
+		monitor_user.follow_num,
+		monitor_user.fan_num,
+		monitor_user.level,
+		monitor_user.address,
+		monitor_user.school,
+		monitor_user.introduction,
+		monitor_user.v_flag,
+		monitor_user.v_info,
+		monitor_user.img_url,
+      monitor_user.last_time,
+		COUNT(aid) AS article_num,
+		IFNULL(monitor_user.fan_num - temp_monitor_user.fan_num,0) AS `ff`,
+		IFNULL(monitor_user.follow_num - temp_monitor_user.follow_num,0) AS `af`,
+		monitor_user.follow_num + monitor_user.fan_num AS `influence`
+		FROM
+		monitor_user
+		JOIN medias ON monitor_user.mid = medias.mid
+		LEFT JOIN articles ON monitor_user.uid = articles.uid AND monitor_user.mid =
+		articles.mid
+		LEFT JOIN temp_monitor_user ON monitor_user.uid = temp_monitor_user.uid AND
+		monitor_user.mid = temp_monitor_user.mid
+		GROUP BY
+		monitor_user.uid,
+		monitor_user.mid
+		) t
+		LEFT JOIN(
+		SELECT
+		monitor_user.id,
+		COUNT(aid) AS `if`
+		FROM
+		monitor_user
+		LEFT JOIN articles ON monitor_user.uid = articles.uid AND monitor_user.mid =
+		articles.mid
+		WHERE
+		DATE(rdate) >= DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+		GROUP BY
+		monitor_user.id) tt
+		ON
+		t.id = tt.id
+		LEFT JOIN(
+		SELECT
+		monitor_user.id,
+		COUNT(aid) AS `article_negative_num`
+		FROM
+		monitor_user
+		LEFT JOIN articles ON monitor_user.uid = articles.uid AND monitor_user.mid =
+		articles.mid
+		WHERE
+		p_or_n=-1 AND relate_tju=1
+		GROUP BY
+		monitor_user.id
+		) ttt
+		ON t.id=ttt.id
+		WHERE t.mid=1
+		ORDER BY activity DESC
+        """
         self.cursor.execute(sql)
         rows = self.cursor.fetchall()
-        userList = []
-        for row in rows:
-            userList.append(row[0])
-        return userList
+        # userList = []
+        # for row in rows:
+        #     userList.append(row[0])
+        # return userList
+        return rows
 
     def getWeiboArticles(self):
         sql = "SELECT aid FROM articles WHERE mid=1"
@@ -184,6 +263,6 @@ class Sentiment:
 
 if __name__ == '__main__':
     sentiment = Sentiment()
-    users = sentiment.getWeiboArticles()
+    users = sentiment.getWeiboUsers()
     for each in users:
-        print(each)
+        print(each[0:15])

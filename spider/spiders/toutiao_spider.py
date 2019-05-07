@@ -69,38 +69,24 @@ class XuanchuanbuSpider(scrapy.Spider):
     def start_requests(self):
         self.monitor_user_list = []
         self.article_list = []
-        # self.weibo_user_search()
         for each in self.weibo_user_list:
-            url = 'https://weibo.cn/' + each
-            r = scrapy.Request(url, callback=self.weibo_spider, meta={'dont_redirect': True})
-            r.meta['uid'] = each
-            yield r
-            # self.toutiao_user_spider()
-            # self.zhihu_user_spider()
-            # for each in self.monitor_user_list:
-            #     if each[1] == 4:
-            #         r = SplashRequest('https://www.toutiao.com/c/user/' + each[0] + '/',
-            #                           self.toutiao_parse, args=self.splash_args)
-            #         r.meta['uid'] = each[0]
-            #     elif each[1] == 3:
-            #         r = scrapy.Request(url='https://www.zhihu.com/api/v4/members/' + each[
-            #             0] + '/answers?include=data%5B*%5D.is_normal%2Cadmin_closed_comment'
-            #                  '%2Creward_info%2Cis_collapsed%2Cannotation_action'
-            #                  '%2Cannotation_detail%2Ccollapse_reason%2Ccollapsed_by'
-            #                  '%2Csuggest_edit%2Ccomment_count%2Ccan_comment%2Ccontent'
-            #                  '%2Cvoteup_count%2Creshipment_settings%2Ccomment_permission'
-            #                  '%2Cmark_infos%2Ccreated_time%2Cupdated_time%2Creview_info'
-            #                  '%2Cquestion%2Cexcerpt%2Cis_labeled%2Clabel_info%2Crelationship'
-            #                  '.is_authorized%2Cvoting%2Cis_author%2Cis_thanked%2Cis_nothelp'
-            #                  '%2Cis_recognized%3Bdata%5B*%5D.author.badge%5B%3F('
-            #                  'type%3Dbest_answerer)%5D.topics&offset=0&limit=20&sort_by
-            # =created',
-            #                            callback=self.zhihu_article_spider)
-            #         r.meta['uid'] = each[0]
-            #     yield r
+            url = 'https://weibo.cn/' + each[0]
+            activity = each[15]
+            diff = datetime.datetime.now() - each[14]
+            diff = diff.days * 24 * 3600 + diff.seconds
+            if diff > 15 * 60 or activity >= 2:
+                r = scrapy.Request(url, callback=self.weibo_spider,
+                                   meta={'dont_redirect': True})
+                r.meta['user'] = each
+                yield r
+                time.sleep(0.1)
 
     def weibo_spider(self, response):
-        uid = response.meta['uid']
+        user = response.meta['user']
+        line = []
+        for each in user[0:15]:
+            line.append(each)
+        uid = line[0]
         tips = response.xpath("//div[@class='tip2']").xpath('string()').extract_first()
         if not tips:
             return
@@ -108,12 +94,19 @@ class XuanchuanbuSpider(scrapy.Spider):
         follow_num = tip.group(1)
         fan_num = tip.group(2)
 
-        r = scrapy.Request(url="https://weibo.cn/%s/info" % uid,
-                           callback=self.weibo_user_spider, dont_filter=True)
-        r.meta['uid'] = uid
-        r.meta['fan_num'] = fan_num
-        r.meta['follow_num'] = follow_num
-        yield r
+        line[5] = follow_num
+        line[6] = fan_num
+        line[14] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        if line[2] == '' or not line[2]:
+            r = scrapy.Request(url="https://weibo.cn/%s/info" % uid,
+                               callback=self.weibo_user_spider, dont_filter=True)
+            r.meta['uid'] = uid
+            r.meta['fan_num'] = fan_num
+            r.meta['follow_num'] = follow_num
+            yield r
+        else:
+            print(line)
+            self.monitor_user_list.append(line)
 
         i = 0
         divs = response.xpath("//div[@class='c' and @id]")
@@ -178,7 +171,7 @@ class XuanchuanbuSpider(scrapy.Spider):
 
         line = [response.meta['uid'], 1, name, gender, '', response.meta['follow_num'],
                 response.meta['fan_num'], level, address, '', introduction, v_flag, v_info,
-                img_url]
+                img_url, time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())]
         print(line)
         self.monitor_user_list.append(line)
 
