@@ -74,7 +74,7 @@ class XuanchuanbuSpider(scrapy.Spider):
             activity = each[15]
             diff = datetime.datetime.now() - each[14]
             diff = diff.days * 24 * 3600 + diff.seconds
-            if diff > 30 * 60 or activity >= 1:
+            if diff > 30 * 60 or activity >= 2:
                 r = scrapy.Request(url, callback=self.weibo_spider,
                                    meta={'dont_redirect': True})
                 r.meta['user'] = each
