@@ -74,12 +74,11 @@ class XuanchuanbuSpider(scrapy.Spider):
             activity = each[15]
             diff = datetime.datetime.now() - each[14]
             diff = diff.days * 24 * 3600 + diff.seconds
-            if diff > 15 * 60 or activity >= 2:
+            if diff > 30 * 60 or activity >= 1:
                 r = scrapy.Request(url, callback=self.weibo_spider,
                                    meta={'dont_redirect': True})
                 r.meta['user'] = each
                 yield r
-                time.sleep(0.1)
 
     def weibo_spider(self, response):
         user = response.meta['user']
@@ -107,6 +106,7 @@ class XuanchuanbuSpider(scrapy.Spider):
         else:
             print(line)
             self.monitor_user_list.append(line)
+        time.sleep(0.3)
 
         i = 0
         divs = response.xpath("//div[@class='c' and @id]")
