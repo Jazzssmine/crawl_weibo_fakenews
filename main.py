@@ -2,15 +2,14 @@
 import datetime
 from scrapy import cmdline
 from scrapy.crawler import CrawlerProcess
-from spider.spiders.toutiao_spider import XuanchuanbuSpider
+
 from apscheduler.schedulers.blocking import BlockingScheduler
 import multiprocessing
 
 
 def job():
-    # cmdline.execute("scrapy crawl toutiao --nolog".split())
-    cmdline.execute("scrapy crawl toutiao".split())
-
+    cmdline.execute("scrapy crawl jubao".split())
+    cmdline.excute("scrapy crawl jubao".split())
 
 sched = BlockingScheduler()
 

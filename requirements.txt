@@ -1,11 +1,5 @@
 requests
 scrapy
-scrapy-splash
-PyMySQL
 numpy
 lxml
-jieba
 beautifulsoup4
-APScheduler
-baidu-aip
-xlrd
