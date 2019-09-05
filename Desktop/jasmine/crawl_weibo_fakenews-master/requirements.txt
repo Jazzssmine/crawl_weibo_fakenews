@@ -1,0 +1,5 @@
+requests
+scrapy
+numpy
+lxml
+beautifulsoup4
