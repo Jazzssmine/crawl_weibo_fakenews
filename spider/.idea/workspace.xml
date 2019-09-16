@@ -2,23 +2,33 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7cdf85b3-b15a-4e3f-8c46-4776d56e7098" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../ipPool.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/spider.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/spiders/jubao_spider.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/weibo_content.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/../run.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/middlewares.py" beforeDir="false" afterPath="$PROJECT_DIR$/middlewares.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spiders/sentiment.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spiders/toutiao_spider.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/spiders/停用词.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../test.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../天津大学校园新媒体备案登记统计表.xlsx" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/web_comments.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web_comments2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../weibospider.git/HEAD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../weibospider.git/config" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../weibospider.git/description" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../weibospider.git/hooks/applypatch-msg.sample" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../weibospider.git/hooks/commit-msg.sample" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../weibospider.git/hooks/fsmonitor-watchman.sample" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../weibospider.git/hooks/post-update.sample" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../weibospider.git/hooks/pre-applypatch.sample" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../weibospider.git/hooks/pre-commit.sample" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../weibospider.git/hooks/pre-push.sample" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../weibospider.git/hooks/pre-rebase.sample" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../weibospider.git/hooks/pre-receive.sample" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../weibospider.git/hooks/prepare-commit-msg.sample" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../weibospider.git/hooks/update.sample" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../weibospider.git/info/exclude" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../weibospider.git/objects/pack/pack-982fdfe74b38fd2d5e4f6e49d655f3c8e08bc922.idx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../weibospider.git/objects/pack/pack-982fdfe74b38fd2d5e4f6e49d655f3c8e08bc922.pack" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../weibospider.git/packed-refs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crawl_data/crawl_0.csv" beforeDir="false" afterPath="$PROJECT_DIR$/crawl_data/crawl_0.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crawl_data/crawl_1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/crawl_data/crawl_1.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/html源码解析.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/html源码解析.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spiders/jubao_spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/spiders/jubao_spider.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/读取原微博数据.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/读取原微博数据.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../weibospider" beforeDir="false" afterPath="$PROJECT_DIR$/../weibospider" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,11 +38,35 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/spiders/jubao_spider.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="150">
-              <caret line="16" column="19" lean-forward="true" selection-start-line="16" selection-start-column="19" selection-end-line="16" selection-end-column="19" />
+              <caret line="16" column="22" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web_comments.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="245">
+              <caret line="56" column="34" lean-forward="true" selection-start-line="56" selection-start-column="34" selection-end-line="56" selection-end-column="34" />
+              <folding>
+                <element signature="e#0#29#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/web_comments2.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="214">
+              <caret line="74" column="47" lean-forward="true" selection-start-line="74" selection-start-column="47" selection-end-line="74" selection-end-column="47" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -59,12 +93,16 @@
       <list>
         <option value="$PROJECT_DIR$/weibo_content.py" />
         <option value="$PROJECT_DIR$/spiders/jubao_spider.py" />
+        <option value="$PROJECT_DIR$/web_comments.py" />
+        <option value="$PROJECT_DIR$/web_comments2.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="width" value="1440" />
-    <option name="height" value="900" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="403" />
+    <option name="y" value="23" />
+    <option name="width" value="1216" />
+    <option name="height" value="877" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -126,19 +164,19 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1567530730499</updated>
-      <workItem from="1567530731704" duration="417000" />
+      <workItem from="1567530731704" duration="1835000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="417000" />
+    <option name="totallyTimeSpent" value="1835000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <frame x="403" y="23" width="1216" height="877" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.29761904" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" />
@@ -170,7 +208,27 @@
     <entry file="file://$PROJECT_DIR$/spiders/jubao_spider.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
-          <caret line="16" column="19" lean-forward="true" selection-start-line="16" selection-start-column="19" selection-end-line="16" selection-end-column="19" />
+          <caret line="16" column="22" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web_comments.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="56" column="34" lean-forward="true" selection-start-line="56" selection-start-column="34" selection-end-line="56" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web_comments2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="214">
+          <caret line="74" column="47" lean-forward="true" selection-start-line="74" selection-start-column="47" selection-end-line="74" selection-end-column="47" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

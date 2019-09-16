@@ -14,7 +14,7 @@ class JubaoSpider(scrapy.Spider):
     }
     url = 'https://service.account.weibo.com/index?type=5&status=4&page=%s'
     # url = 'https://service.account.weibo.com/index?type=0&status=4&page=%s'
-    max_page_num = 
+    max_page_num = 500
     # file_dir = r'E:\jubao'
     file_dir = r'/Users/wangyian/Desktop/spider/spider/text_data'
 
